@@ -40,14 +40,15 @@ func NewDomainFilter(domainFilters []string) DomainFilter {
 
 // Match checks whether a domain can be found in the DomainFilter.
 func (df DomainFilter) Match(domain string) bool {
+	// Trim final . (dot) from domain
+	trimmedDomain := strings.TrimSuffix(domain, ".")
 	// return always true, if not filter is specified
 	if len(df.filters) == 0 {
 		return true
 	}
 
 	for _, filter := range df.filters {
-
-		if strings.HasSuffix(strings.TrimSuffix(domain, "."), filter) {
+		if trimmedDomain == filter || strings.HasSuffix(trimmedDomain, "."+filter) {
 			return true
 		}
 	}
